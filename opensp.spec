@@ -1,6 +1,6 @@
 Name:           opensp
 Version:        1.5.2
-Release:        31
+Release:        32
 Summary:        SGML and XML parser
 License:        MIT
 BuildRequires:  gcc-c++ xmlto
@@ -35,6 +35,9 @@ mv -f ChangeLog.tmp ChangeLog
 touch lib/parser_inst.cxx
 
 %build
+%if "%toolchain" == "clang"
+	export CXXFLAGS="$CXXFLAGS -std=c++03"
+%endif
 %configure \
  --disable-dependency-tracking --disable-static --enable-http \
  --enable-default-catalog=%{_sysconfdir}/sgml/catalog \
@@ -87,5 +90,8 @@ make check || :
 
 
 %changelog
+* Sat May 06 2023 yoo <sunyuechi@iscas.ac.cn> - 1.5.2-32
+- fix clang build error
+
 * Sat Nov 30 2019 zoushuangshuang<zoushuangshuang@huawei.com> - 1.5.2-31
 - Package init
